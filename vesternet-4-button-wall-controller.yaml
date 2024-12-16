@@ -62,38 +62,38 @@ blueprint:
       selector:
         action: {}
     I2_key_pressed:
-      name: Second Row ON (I) Key Pressed
-      description: Action to run when Second Row ON (I) button is pressed
+      name: Bottom Row ON (I) Key Pressed
+      description: Action to run when Bottom Row ON (I) button is pressed
       default: []
       selector:
         action: {}
     I2_key_held_down:
-      name: Second Row ON (I) Held Down
-      description: Action to run when Second Row ON (I) button is held down
+      name: Bottom Row ON (I) Held Down
+      description: Action to run when Bottom Row ON (I) button is held down
       default: []
       selector:
         action: {}
     I2_key_released:
-      name: Second Row ON (I) Released
-      description: Action to run when Second Row ON (I) button is released after being held down.
+      name: Bottom Row ON (I) Released
+      description: Action to run when Bottom Row ON (I) button is released after being held down.
       default: []
       selector:
         action: {}
     O2_key_pressed:
-      name: Second Row OFF (O) Key Pressed
-      description: Action to run when Second Row OFF (O) button is pressed
+      name: Bottom Row OFF (O) Key Pressed
+      description: Action to run when Bottom Row OFF (O) button is pressed
       default: []
       selector:
         action: {}
     O2_key_held_down:
-      name: Second Row OFF (O) Held Down
-      description: Action to run when Second Row OFF (O) button is held down
+      name: Bottom Row OFF (O) Held Down
+      description: Action to run when Bottom Row OFF (O) button is held down
       default: []
       selector:
         action: {}
     O2_key_released:
-      name: Second Row OFF (O) Released
-      description: Action to run when Second Row OFF (O) button is released after being held down.
+      name: Bottom Row OFF (O) Released
+      description: Action to run when Bottom Row OFF (O) button is released after being held down.
       default: []
       selector:
         action: {}
@@ -166,11 +166,10 @@ action:
           value_template: >
             {{
               trigger.event.data.device_id == zwavejs_device and
-              trigger.event.data.property_key_name == '001' and
+              trigger.event.data.property_key_name == '002' and
               trigger.event.data.value == 'KeyReleased'
             }}
         sequence: !input O1_key_released
-
       - conditions:
         - condition: template
           value_template: >
@@ -225,12 +224,4 @@ action:
               trigger.event.data.value == 'KeyReleased'
             }}
         sequence: !input O2_key_released
-      - conditions:
-        - condition: template
-          value_template: >
-            {{
-              trigger.event.data.device_id == zwavejs_device and
-              trigger.event.data.property_key_name == '005' and
-              trigger.event.data.value == 'KeyPressed'
-            }}
   default: []
