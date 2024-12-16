@@ -1,0 +1,336 @@
+blueprint:
+  name: Z-Wave JS - Vesternet 4-Button Wall Controller
+  description: 'Create automations for Vesternet 4-Button Wall Controller [VESTERNET-ZPUSH4](https://www.vesternet.com/en-eu/products/vesternet-zigbee-wall-controller-4-button)
+    using the Z-Wave JS integration.
+
+    The buttons are labelled assuming the LED is positioned at the top of the device.
+
+    The automations supports the following triggers for each button:
+
+    * Pressed
+
+    * Held Down
+
+    * Released
+
+    '
+  domain: automation
+  input:
+    zwavejs_device:
+      name: ZWaveJS Device
+      description: List of available Vesternet 4-Button Wall Controller.
+      selector:
+        device:
+          integration: zwave_js
+          manufacturer: Vesternet
+          model: VES-ZW-WAL-008
+          multiple: false
+    I1_key_pressed:
+      name: Top ON (I) Key Pressed
+      description: Action to run when Top Row ON (I) button is pressed
+      default: []
+      selector:
+        action: {}
+    I1_key_held_down:
+      name: Top ON (I) Held Down
+      description: Action to run when Top Row ON (I) button is held down
+      default: []
+      selector:
+        action: {}
+    I1_key_released:
+      name: ON (I) Released
+      description: Action to run when Top Row ON (I) button is released after being held down.
+      default: []
+      selector:
+        action: {}
+    O1_key_pressed:
+      name: Top OFF (O) Key Pressed
+      description: Action to run when Top Row OFF (O) button is pressed
+      default: []
+      selector:
+        action: {}
+    O1_key_held_down:
+      name: Top OFF (O) Held Down
+      description: Action to run when Top Row OFF (O) button is held down
+      default: []
+      selector:
+        action: {}
+    O1_key_released:
+      name: Top OFF (O) Released
+      description: Action to run when Top Row OFF (O) button is released after being held down.
+      default: []
+      selector:
+        action: {}
+    I2_key_pressed:
+      name: Second Row ON (I) Key Pressed
+      description: Action to run when Second Row ON (I) button is pressed
+      default: []
+      selector:
+        action: {}
+    I2_key_held_down:
+      name: Second Row ON (I) Held Down
+      description: Action to run when Second Row ON (I) button is held down
+      default: []
+      selector:
+        action: {}
+    I2_key_released:
+      name: Second Row ON (I) Released
+      description: Action to run when Second Row ON (I) button is released after being held down.
+      default: []
+      selector:
+        action: {}
+    O2_key_pressed:
+      name: Second Row OFF (O) Key Pressed
+      description: Action to run when Second Row OFF (O) button is pressed
+      default: []
+      selector:
+        action: {}
+    O2_key_held_down:
+      name: Second Row OFF (O) Held Down
+      description: Action to run when Second Row OFF (O) button is held down
+      default: []
+      selector:
+        action: {}
+    O2_key_released:
+      name: Second Row OFF (O) Released
+      description: Action to run when Second Row OFF (O) button is released after being held down.
+      default: []
+      selector:
+        action: {}
+  source_url: https://github.com/royvandongen/Vesternet-z-push-4-blueprint-hass/blob/master/vesternet-4-button-wall-controller.yaml
+mode: single
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: zwave_js_value_notification
+variables:
+  logger: blueprint.zwavejs_scene_activation
+  zwavejs_device: !input zwavejs_device
+action:
+- choose:
+  - conditions:
+    - condition: template
+      value_template: >
+        {{
+          trigger.event.data.device_id == zwavejs_device
+        }}
+    sequence:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '001' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input I1_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '001' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input I1_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '001' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input I1_key_released
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '002' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input O1_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '002' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input O1_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '001' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input O1_key_released
+
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '003' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input I2_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '003' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input I2_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '003' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input I2_key_released
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '004' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input O2_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '004' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input O2_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '004' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input O2_key_released
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '005' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input I3_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '005' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input I3_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '005' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input I3_key_released
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '006' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input O3_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '006' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input O3_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '006' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input O3_key_released
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '007' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input I4_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '007' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input I4_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '007' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input I4_key_released
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '008' and
+              trigger.event.data.value == 'KeyPressed'
+            }}
+        sequence: !input O4_key_pressed
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '008' and
+              trigger.event.data.value == 'KeyHeldDown'
+            }}
+        sequence: !input O4_key_held_down
+      - conditions:
+        - condition: template
+          value_template: >
+            {{
+              trigger.event.data.device_id == zwavejs_device and
+              trigger.event.data.property_key_name == '008' and
+              trigger.event.data.value == 'KeyReleased'
+            }}
+        sequence: !input O4_key_released
+  default: []
